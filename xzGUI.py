@@ -190,7 +190,7 @@ def save_file(path,filename,data):
 
 
 #-------------------------------------------------------
-#------------------------图形界面------------------------
+#------------------------图形界面GUI------------------------
 class myapp(wx.App):
 	def __init__(self):
 		super(myapp,self).__init__(False)
@@ -238,16 +238,18 @@ class mainframe(wx.Frame):
 		vbox.Add(hbox3,flag=wx.ALIGN_CENTER)
 
 		vbox.Add((-1,15))
-		self.randpicfield=wx.TextCtrl(self)
+		self.pic=wx.StaticBitmap(self,bitmap=wx.EmptyBitmap(55,22,-1),size=(55,22))
+		self.randpicfield=wx.TextCtrl(self,size=(50,20))
 		self.inputstrbtn=wx.Button(self,label="input str")
 		hbox4=wx.BoxSizer(wx.HORIZONTAL)
-		hbox4.Add(self.randpicfield,flag=wx.LEFT,border=10)
-		hbox4.Add(self.inputstrbtn,flag=wx.LEFT,border=8)
+		hbox4.Add(self.pic,flag=wx.RIGHT,border=8)
+		hbox4.Add(self.randpicfield)
+		hbox4.Add(self.inputstrbtn,flag=wx.LEFT,border=5)
 		vbox.Add(hbox4,flag=wx.ALIGN_CENTER)
 
 		vbox.Add((-1,15))
 
-		self.headlabel=wx.StaticText(self,size=(60,20))
+		self.headlabel=wx.StaticText(self,size=(60,22))
 		self.infolabel=wx.StaticText(self,size=(120,20))
 		self.infolabel.SetLabel("text")
 		self.headlabel.SetLabel("log:")
@@ -258,7 +260,7 @@ class mainframe(wx.Frame):
 
 		vbox.Add((-1,10))
 
-		self.cancelbtn=wx.Button(self,label="cancel")
+		self.cancelbtn=wx.Button(self,label="cancle")
 		hbox6=wx.BoxSizer(wx.HORIZONTAL)
 		hbox6.Add(self.cancelbtn)
 		vbox.Add(hbox6,flag=wx.ALIGN_CENTER)
@@ -288,22 +290,28 @@ class mainframe(wx.Frame):
 			self.sid=addTime(resourceid) #开始计时
 			pic=getRandomPic(resourceid)
 			save_file(savepath,"islogin"+self.stringnow+".png",pic)
-			self.pic=wx.StaticBitmap(self,bitmap=getBitmap(55,22,"islogin"+self.stringnow+".png"),size=(55,22),pos=(92,197))
+			#self.pic.Destroy()
+			self.pic.SetBitmap(getBitmap(55,22,savepath+"islogin"+self.stringnow+".png"))
+			# self.Hide()
+			# self.Show()
+			#self.pic=wx.StaticBitmap(self,bitmap=getBitmap(55,22,"islogin"+self.stringnow+".png"),size=(55,22),pos=(122,196))
 		else:
 			self.infolabel.SetLabel("login failed!")
 
 	def onClickCancel(self,event):
 		self.confirmbtn.Enable(True)
+		self.randpicfield.Enable(True)
 
 	def onClickInput(self,event):
 		randstr=self.randpicfield.GetValue()
 		firststr=updateTime(resourceid,self.sid,randstr)
 		self.infolabel.SetLabel(firststr)
 		self.confirmbtn.Enable(False)
+		self.randpicfield.Enable(False)
 		
-		if (time.time()-self.firstnow)>60:
+		if (time.time()-self.firstnow)>360:
 			if self.looptime>8:
-				pass
+				self.infolabel.SetLabel("please login again")
 			else:
 				self.looptime=self.looptime+1
 				randnumstr=updateTime(resourceid,self.sid,randstr)
