@@ -56,8 +56,11 @@ def login(username,password):
 		req.add_header(n,headers[n])
 	html=urllib2.urlopen(req).read()
 	#print html
-	output = re.findall("登录成功，系统2秒后载入...",html)[0]
-	return output
+	output = re.findall("登录成功，系统2秒后载入...",html)
+	if output!=[]:
+		return output[0]
+	else:
+		return "failed!"
 #======================================================
 
 def watchvideo(resourceID):
@@ -223,7 +226,7 @@ class mainframe(wx.Frame):
 
 		vbox.Add((-1,10))
 
-		self.passwordfield=wx.TextCtrl(self)
+		self.passwordfield=wx.TextCtrl(self,style=wx.TE_PASSWORD)
 		self.passwordlabel=wx.StaticText(self,label="password:")
 		hbox2=wx.BoxSizer(wx.HORIZONTAL)
 		hbox2.Add(self.passwordlabel,flag=wx.RIGHT,border=5)
@@ -241,6 +244,7 @@ class mainframe(wx.Frame):
 		self.pic=wx.StaticBitmap(self,bitmap=wx.EmptyBitmap(55,22,-1),size=(55,22))
 		self.randpicfield=wx.TextCtrl(self,size=(50,20))
 		self.inputstrbtn=wx.Button(self,label="input str")
+		self.inputstrbtn.Enable(False)
 		hbox4=wx.BoxSizer(wx.HORIZONTAL)
 		hbox4.Add(self.pic,flag=wx.RIGHT,border=8)
 		hbox4.Add(self.randpicfield)
@@ -292,6 +296,7 @@ class mainframe(wx.Frame):
 			save_file(savepath,"islogin"+self.stringnow+".png",pic)
 			#self.pic.Destroy()
 			self.pic.SetBitmap(getBitmap(55,22,savepath+"islogin"+self.stringnow+".png"))
+			self.inputstrbtn.Enable(True)
 			# self.Hide()
 			# self.Show()
 			#self.pic=wx.StaticBitmap(self,bitmap=getBitmap(55,22,"islogin"+self.stringnow+".png"),size=(55,22),pos=(122,196))
@@ -301,23 +306,42 @@ class mainframe(wx.Frame):
 	def onClickCancel(self,event):
 		self.confirmbtn.Enable(True)
 		self.randpicfield.Enable(True)
+		self.usernamefield.Enable(True)
+		self.passwordfield.Enable(True)
+		self.inputstrbtn.Enable(False)
+		self.usernamefield.SetValue("")
+		self.passwordfield.SetValue("")
+		self.randpicfield.SetValue("")
+		self.pic.SetBitmap(wx.EmptyBitmap(55,22,-1))
+		self.infolabel.SetLabel("")
 
 	def onClickInput(self,event):
 		randstr=self.randpicfield.GetValue()
-		firststr=updateTime(resourceid,self.sid,randstr)
-		self.infolabel.SetLabel(firststr)
+		# firststr=updateTime(resourceid,self.sid,randstr)
+		# self.infolabel.SetLabel(firststr)
 		self.confirmbtn.Enable(False)
 		self.randpicfield.Enable(False)
+		self.usernamefield.Enable(False)
+		self.passwordfield.Enable(False)
 		
-		if (time.time()-self.firstnow)>360:
-			if self.looptime>8:
+		if (time.time()-self.firstnow)>60 or self.looptime==0:
+			if self.looptime>1:
 				self.infolabel.SetLabel("please login again")
+				self.confirmbtn.Enable(True)
+				self.randpicfield.Enable(True)
+				self.usernamefield.Enable(True)
+				self.passwordfield.Enable(True)
+				self.inputstrbtn.Enable(False)
+				self.usernamefield.SetValue("")
+				self.passwordfield.SetValue("")
+				self.randpicfield.SetValue("")
+				self.pic.SetBitmap(wx.EmptyBitmap(55,22,-1))
 			else:
 				self.looptime=self.looptime+1
 				randnumstr=updateTime(resourceid,self.sid,randstr)
 				self.firstnow=time.time()
 				self.infolabel.SetLabel(str(self.looptime)+": "+randnumstr)
-		elif self.looptime>0:
+		else:
 			self.infolabel.SetLabel("please press later")
 		#==========================================================
 
