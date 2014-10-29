@@ -1,7 +1,9 @@
 xzGUI
 =====
 西南交通大学形势与政策课程网上视频刷计时系统
+
 author：zhipengx，swjtu，chengdu
+
 contect me:landonpro@163.com qq:1097549351
 
 update:
