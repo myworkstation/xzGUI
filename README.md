@@ -13,3 +13,7 @@ update:
 2.更新时间模式变更为操作者点击按钮更新时间
 
 3.验证码无需进入保存目录读取，界面自动显示验证码
+
+/Users/Landon_pro/Desktop/7DF7102E-1B53-4C97-BC95-F74CAEDBCECA.png
+
+

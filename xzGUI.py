@@ -324,7 +324,7 @@ class mainframe(wx.Frame):
 		self.usernamefield.Enable(False)
 		self.passwordfield.Enable(False)
 		
-		if (time.time()-self.firstnow)>60 or self.looptime==0:
+		if (time.time()-self.firstnow)>360 or self.looptime==0:
 			if self.looptime>1:
 				self.infolabel.SetLabel("please login again")
 				self.confirmbtn.Enable(True)
