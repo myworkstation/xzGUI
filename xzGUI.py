@@ -215,7 +215,10 @@ class mainframe(wx.Frame):
 		hbox0=wx.BoxSizer(wx.HORIZONTAL)
 		hbox0.Add(logomap)
 		vbox.Add(hbox0,flag=wx.ALIGN_CENTER)
-		vbox.Add((-1,20))
+		statcLine=wx.StaticLine(self,size=(500,1))
+		vbox.Add((-1,5))
+		vbox.Add(statcLine,flag=wx.ALIGN_CENTER)
+		vbox.Add((-1,15))
 
 		self.usernamefield=wx.TextCtrl(self)
 		self.usernamelabel=wx.StaticText(self,label="username:")
