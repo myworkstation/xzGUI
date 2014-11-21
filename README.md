@@ -4,7 +4,7 @@ xzGUI
 
 author：zhipengx，swjtu，chengdu
 
-contect me:landonpro#163.com qq:1097549351
+contect me:landonpro#163.com
 
 update:
 
